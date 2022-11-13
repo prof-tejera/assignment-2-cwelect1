@@ -1,0 +1,27 @@
+{ "timers" : 
+  [
+    {
+      "name": "stopwatch",
+      "start": 0,
+      "end": 60000
+    },
+    {
+      "name": "countdown",
+      "start": 5000,
+      "end": 0
+    },
+    {
+      "name": "xy",
+      "rounds": 2,
+      "start": 2000,
+      "end": 0
+    },
+    {
+      "name": "tabata",
+      "rounds": 3,
+      "work": 5000,
+      "rest": 2000,
+      "end": 0
+    }
+  ]
+}
