@@ -1,22 +1,21 @@
 // A timer that counts up to X amount of time (e.g. count up to 2 minutes and 30 seconds, starting at 0)
 import { useState, useEffect } from "react";
-import Button from "../generic/Buttons";
-import properties from "../../properties.json";
+import Buttons from "../generic/Buttons";
 import Panel from "../generic/Panel";
 
-const Stopwatch = () => {
+const Stopwatch = (props) => {
   const [isStarted, setisStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(0);
-  const endTime = properties.timers[0].end;
+  const endTime = props.maxTime;
   
   useEffect(() => {
     let interval = null;
   
-    if (isStarted && isPaused === false && time !== endTime) {
+    if (isStarted === true && isPaused === false && time !== endTime) {
       interval = setInterval(() => {
-        setTime((time) => time + 10 );
-      }, 10);
+        setTime((time) => time + 1000 );
+      }, 1000);
     } else {
       clearInterval(interval);
     }
@@ -48,7 +47,7 @@ const Stopwatch = () => {
   return (
     <div className="stop-watch">
       <Panel time={time}/>
-      <Button
+      <Buttons
         countDirection='up'
         time={time}
         endTime={endTime}

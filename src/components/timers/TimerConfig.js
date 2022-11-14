@@ -2,12 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Select from "../generic/Select";
 import TimerView from "../../views/TimerView";
-import { useState, useEffect } from "react";
-
-const ColoredDiv = styled.div`
-  background-color: ${props => props.inputColor || "rgb(27, 238, 16)"};
-  margin: 5px;
-`;
+import { useState } from "react";
 
 const ClearDiv = styled.div`
   display: grid;
@@ -29,49 +24,94 @@ const RowDiv = styled.div`
   gap: 10px;
 `;
 
-/* Generisize this component
-  Exposwe things to configure
-    Background color
-    Height 
-    Width
-    ???
-*/
-
 const TimerConfig = (props) => {
-  const [reset, setReset] = useState(false);
-  const [rounds, setRounds] = useState(1);
-  const [workTime, setWorkTime] = useState(5);
-  const [restTime, setRestTime] = useState(5);
 
-  const resetDefaults = (reset) => {
-    console.log('Reset: ' + reset);
-    return reset ? true : false;
+  const Stopwatch = () => {
+    const [maxTime, setMaxTime] = useState(60)  
+    
+    const handleOnChangeMaxTime = (e) => {
+      setMaxTime(e.target.value);
+    };
+
+    return(
+      <ClearDiv className="timer">
+        <RowDiv>
+          <label>Start Time (Seconds)</label>
+          <Select value={maxTime} onChange={handleOnChangeMaxTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+        </RowDiv>
+        <div>
+          <TimerView type={props.type} maxTime={maxTime}/>
+        </div>
+      </ClearDiv>
+    );
   }
 
-  useEffect(() => {
-    // Reset dropdown if timer type changes
-    if (reset === true) {
-      setRounds(1);
-      setWorkTime(5);
-      setRestTime(5);
-      setReset(false)
-    }
-  }, []);
+  const Countdown = () => {
+    const [startTime, setStartTime] = useState(5)
+
+    const handleOnChangeStartTime = (e) => {
+      setStartTime(e.target.value);
+    };
   
-  const handleOnChangeRounds = (e) => {
-    setRounds(e.target.value);
-  };
+    return(
+      <ClearDiv className="timer">
+        <RowDiv>
+          <label>Start Time (Seconds)</label>
+          <Select value={startTime} onChange={handleOnChangeStartTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+        </RowDiv>
+        <div>
+          <TimerView type={props.type} startTime={startTime}/>
+        </div>
+      </ClearDiv>
+    );
+  }
 
-  const handleOnChangeWorkTime = (e) => {
-    setWorkTime(e.target.value);
-  };
+  const XY = () => {
+    const [rounds, setRounds] = useState(1);
+    const [startTime, setStartTime] = useState(5);
 
-  const handleOnChangeRestTime = (e) => {
-    setRestTime(e.target.value);
-  };
+    const handleOnChangeRounds = (e) => {
+      setRounds(e.target.value);
+    };
+    
+    const handleOnChangeStartTime = (e) => {
+      setStartTime(e.target.value);
+    };
+  
+    return(
+      <ClearDiv className="timer">
+        <ColumnDiv>
+          <RowDiv>
+            <label>Rounds</label>
+            <Select value={rounds} onChange={handleOnChangeRounds} width="25%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></Select>
+            <label>Start Time (Seconds)</label>
+            <Select value={startTime} onChange={handleOnChangeStartTime} width="25%" name="workTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
+          </RowDiv>
+        </ColumnDiv>
+        <div>
+          <TimerView type={props.type} rounds={rounds} startTime={startTime}/>
+        </div>
+      </ClearDiv>
+    );
+  }
 
-  if (props.type === 'Tabata') {
-    setReset(true);
+  const Tabata = () => {
+    const [rounds, setRounds] = useState(1);
+    const [workTime, setWorkTime] = useState(5);
+    const [restTime, setRestTime] = useState(5);
+
+    const handleOnChangeRounds = (e) => {
+      setRounds(e.target.value);
+    };
+    
+    const handleOnChangeWorkTime = (e) => {
+      setWorkTime(e.target.value);
+    };
+  
+    const handleOnChangeRestTime = (e) => {
+      setRestTime(e.target.value);
+    };
+  
     return(
       <ClearDiv className="timer">
         <ColumnDiv>
@@ -81,11 +121,11 @@ const TimerConfig = (props) => {
         </RowDiv>
         <RowDiv>
           <label>Work Time (Seconds)</label>
-            <Select value={workTime} onChange={handleOnChangeWorkTime} width="50%" name="workTime" dd_items={[5, 10, 15, 30, 45, 60]}></Select>
+          <Select value={workTime} onChange={handleOnChangeWorkTime} width="50%" name="workTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
         </RowDiv>
         <RowDiv>
           <label>Rest Time (Seconds)</label>
-            <Select value={restTime} onChange={handleOnChangeRestTime} width="50%" name="restTime" dd_items={[5, 10, 15, 30, 45, 60]}></Select>
+            <Select value={restTime} onChange={handleOnChangeRestTime} width="50%" name="restTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
         </RowDiv>
         </ColumnDiv>
         <div>
@@ -93,40 +133,18 @@ const TimerConfig = (props) => {
         </div>
       </ClearDiv>
     );
-  } else if (props.type === 'XY') {
-    return(
-      <ClearDiv className="timer">
-        <div>
-          <Select value={rounds} onChange={handleOnChangeRounds} width="50%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></Select>
-        </div>
-        <div>
-          <TimerView type={props.type}/>
-        </div>
-      </ClearDiv>
-    );
-  } else if (props.type === 'Countdown') {
-    return(
-      <ClearDiv className="timer">
-        <div>
-          <Select value={rounds} onChange={handleOnChangeRounds} width="50%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></Select>
-        </div>
-        <div>
-          <TimerView type={props.type}/>
-        </div>
-      </ClearDiv>
-    );
-  } else if (props.type === 'Stopwatch') {
-    return(
-      <ClearDiv className="timer">
-        <div>
-          <Select value={rounds} onChange={handleOnChangeRounds} width="50%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></Select>
-        </div>
-        <div>
-          <TimerView type={props.type}/>
-        </div>
-      </ClearDiv>
-    );
   }
+
+  if (props.type === 'Stopwatch') {
+    return <Stopwatch/>
+  } else if (props.type === 'Countdown') {
+    return <Countdown/>
+  } else if (props.type === 'XY') {
+    return <XY/>
+  } else if (props.type === 'Tabata') {
+    return <Tabata/>
+  }
+
 };
 
 export default TimerConfig;

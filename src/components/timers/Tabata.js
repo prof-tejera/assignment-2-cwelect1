@@ -1,13 +1,12 @@
 // A timer that counts from a specified time (in milliseconds) to 0 (e.g. count down from 2 minutes and 30 seconds to 0)
 import { useState, useEffect } from "react";
 import Buttons from "../generic/Buttons";
-import properties from "../../properties.json";
 import Panel from "../generic/Panel";
 
 const Tabata = (props) => {
   const workTime = props.workTime;
   const restTime = props.restTime;
-  const endTime = properties.timers[3].end;
+  const endTime = 0;
   const totalRounds = props.rounds;
   const [isStarted, setIsStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
@@ -20,8 +19,8 @@ const Tabata = (props) => {
 
     if (isStarted && isPaused === false && time !== endTime) { // Timer is active
         interval = setInterval(() => {
-          setTime((time) => time - 10 );
-      }, 10);
+          setTime((time) => time - 1000 );
+      }, 1000);
     } else if (time === endTime && (currentRound < totalRounds) && isResting === false) { // Rounds are active Working ended switch to resting period
       setIsResting(true);
       setTime(restTime);
@@ -57,6 +56,7 @@ const Tabata = (props) => {
   
   const handleReset = () => {
     setIsStarted(false);
+    setIsResting(false);
     setCurrentRound(0);
     setTime(workTime);
   };

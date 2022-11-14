@@ -1,13 +1,12 @@
 // A timer that counts from a specified time (in milliseconds) to 0 (e.g. count down from 2 minutes and 30 seconds to 0)
 import { useState, useEffect } from "react";
 import Buttons from "../generic/Buttons";
-import properties from "../../properties.json";
 import Panel from "../generic/Panel";
 
-const XY = () => {
-  const startTime = properties.timers[2].start;
-  const endTime = properties.timers[2].end;
-  let totalRounds = properties.timers[2].rounds;
+const XY = (props) => {
+  const startTime = props.startTime;
+  const endTime = 0;
+  let totalRounds = props.rounds;
   const [isStarted, setisStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(startTime);
@@ -18,8 +17,8 @@ const XY = () => {
 
     if (isStarted && isPaused === false && time !== endTime) { // Timer is active
         interval = setInterval(() => {
-          setTime((time) => time - 10 );
-      }, 10);
+          setTime((time) => time - 1000 );
+      }, 1000);
     } else if (time === endTime && (currentRound < totalRounds)) { // Rounds are still active
       setCurrentRound(currentRound + 1);
       setTime(startTime);
