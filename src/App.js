@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 
 import DocumentationView from "./views/DocumentationView";
@@ -11,12 +11,6 @@ const Container = styled.div`
   height: 100vh;
   overflow: auto;
 `;
-
-const menu_items = [
-  { displayText: "Workout", href: "/", isActive: true },
-  { displayText: "Add Timer", href: "/add", isActive: false },
-  { displayText: "Docs", href: "/docs", isActive: false  },
-];
 
 const App = () => {
   return (
