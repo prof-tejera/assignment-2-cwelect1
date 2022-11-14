@@ -85,7 +85,7 @@ const Buttons = (props) => {
     else if (props.time === props.endTime) { // Max Time reached or FF clicked.
       return(setActiveButtons(props, ['reset']))
     }
-    else if ((props.isStarted && !props.isPaused && props.time > 0) || (props.isPaused && props.time > 0)) {
+    else if ((props.isStarted && !props.isPaused && props.time >= 0) || (props.isPaused && props.time >= 0)) {
       return(setActiveButtons(props, [props.isPaused ? "resume" : "pause", 'ff', 'reset']))
     }
   }
