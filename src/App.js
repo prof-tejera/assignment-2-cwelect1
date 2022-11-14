@@ -19,7 +19,7 @@ const App = () => {
         <Routes>
           <Route path="/add" element={<AddTimerView />} />
           <Route path="/docs" element={<DocumentationView />} />
-          <Route path="/" element={<TimersView />} />
+          <Route path="/assignment-2-cwelect1/" element={<TimersView />} />
         </Routes>
       </Router>
     </Container>
