@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 
 import DocumentationView from "./views/DocumentationView";
-import TimersView from "./views/TimersView";
+import WorkoutView from "./views/WorkoutView";
 import AddTimerView from "./views/AddTimerView";
+import AppProvider from './Context';
 
 const Container = styled.div`
   background: #f0f6fb;
@@ -14,15 +15,17 @@ const Container = styled.div`
 
 const App = () => {
   return (
-    <Container>
-      <Router>
-        <Routes>
-          <Route basename="/assignment-2-cwelect1" path="/add" element={<AddTimerView />} />
-          <Route basename="/assignment-2-cwelect1" path="/docs" element={<DocumentationView />} />
-          <Route basename="/assignment-2-cwelect1" path="/" element={<TimersView />} />
-        </Routes>
-      </Router>
-    </Container>
+    <AppProvider>
+      <Container>
+        <Router basename="/assignment-2-cwelect1" >
+          <Routes>
+            <Route path="/add" element={<AddTimerView />} />
+            <Route path="/docs" element={<DocumentationView />} />
+            <Route path="/" element={<WorkoutView />} />
+          </Routes>
+        </Router>
+      </Container>
+    </AppProvider>
   );
 };
 
