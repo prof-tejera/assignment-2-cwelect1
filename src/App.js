@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 
 import DocumentationView from "./views/DocumentationView";
@@ -17,9 +17,9 @@ const App = () => {
     <Container>
       <Router>
         <Routes>
-          <Route path="/add" element={<AddTimerView />} />
-          <Route path="/docs" element={<DocumentationView />} />
-          <Route path="/assignment-2-cwelect1/" element={<TimersView />} />
+          <Route basename="/assignment-2-cwelect1" path="/add" element={<AddTimerView />} />
+          <Route basename="/assignment-2-cwelect1" path="/docs" element={<DocumentationView />} />
+          <Route basename="/assignment-2-cwelect1" path="/" element={<TimersView />} />
         </Routes>
       </Router>
     </Container>
