@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Select from "../generic/Select";
 import TimerView from "../../views/TimerView";
 import { useState } from "react";
+import { useContext } from 'react';
+import { AppContext } from "../../Context";
 
 const ClearDiv = styled.div`
   display: grid;
@@ -25,6 +27,7 @@ const RowDiv = styled.div`
 `;
 
 const TimerConfig = (props) => {
+  const {addItem} = useContext(AppContext);
 
   const Stopwatch = () => {
     const [maxTime, setMaxTime] = useState(60)  
@@ -33,11 +36,19 @@ const TimerConfig = (props) => {
       setMaxTime(e.target.value);
     };
 
+    const handleAddTimer = () => {
+      addItem({
+        type: 'Stopwatch',
+        maxTime: maxTime
+      });
+    }
+
     return(
       <ClearDiv className="timer">
         <RowDiv>
           <label>Start Time (Seconds)</label>
           <Select value={maxTime} onChange={handleOnChangeMaxTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+          <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
         <div>
           <TimerView type={props.type} maxTime={maxTime}/>
@@ -52,12 +63,20 @@ const TimerConfig = (props) => {
     const handleOnChangeStartTime = (e) => {
       setStartTime(e.target.value);
     };
-  
+
+    const handleAddTimer = () => {
+      addItem({
+        type: 'Countdown',
+        startTime: startTime
+      });
+    }
+
     return(
       <ClearDiv className="timer">
         <RowDiv>
           <label>Start Time (Seconds)</label>
           <Select value={startTime} onChange={handleOnChangeStartTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+          <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
         <div>
           <TimerView type={props.type} startTime={startTime}/>
@@ -78,6 +97,14 @@ const TimerConfig = (props) => {
       setStartTime(e.target.value);
     };
   
+    const handleAddTimer = () => {
+      addItem({
+        type: 'XY',
+        rounds: rounds,
+        startTime: startTime
+      });
+    }
+
     return(
       <ClearDiv className="timer">
         <ColumnDiv>
@@ -86,6 +113,7 @@ const TimerConfig = (props) => {
             <Select value={rounds} onChange={handleOnChangeRounds} width="25%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}></Select>
             <label>Start Time (Seconds)</label>
             <Select value={startTime} onChange={handleOnChangeStartTime} width="25%" name="workTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
+            <button onClick={handleAddTimer}>Add Timer</button>
           </RowDiv>
         </ColumnDiv>
         <div>
@@ -112,6 +140,15 @@ const TimerConfig = (props) => {
       setRestTime(e.target.value);
     };
   
+    const handleAddTimer = () => {
+      addItem({
+        type: 'Tabata',
+        rounds: rounds,
+        workTime: workTime,
+        restTime: restTime
+      });
+    }
+
     return(
       <ClearDiv className="timer">
         <ColumnDiv>
@@ -127,6 +164,7 @@ const TimerConfig = (props) => {
           <label>Rest Time (Seconds)</label>
             <Select value={restTime} onChange={handleOnChangeRestTime} width="50%" name="restTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
         </RowDiv>
+          <button onClick={handleAddTimer}>Add Timer</button>
         </ColumnDiv>
         <div>
           <TimerView type={props.type} workTime={workTime} restTime={restTime} rounds={rounds} />
