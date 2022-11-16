@@ -21,7 +21,7 @@ const Tabata = (props) => {
         interval = setInterval(() => {
           setTime((time) => time - 1000 );
       }, 1000);
-    } else if (time === endTime && (currentRound < totalRounds) && isResting === false) { // Rounds are active Working ended switch to resting period
+    } else if (time === endTime && (currentRound <= totalRounds) && isResting === false) { // Rounds are active Working ended switch to resting period
       setIsResting(true);
       setTime(restTime);
     } else if (time === endTime && (currentRound < totalRounds)) { // Rounds are active: Resting ended switch to working period
