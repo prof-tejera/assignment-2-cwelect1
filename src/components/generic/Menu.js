@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyledUL = styled.ul`
   list-style-type: none;
+  margin: 0;
 `;
 
 const NavLi = styled.li`
@@ -11,8 +13,8 @@ const NavLi = styled.li`
     background-color: ${props => props.color || "lightblue"};
   }
 `;
-
-const NavA = styled.a`
+<Link to="/today"/>
+const NavA = styled(Link)`
   display: block;
   color: ${props => props.color || "green"};
   text-align: center;
@@ -25,7 +27,7 @@ function CreateLinkItem (props) {
     return <NavLi className="active"><NavA href={props.href}>{props.displayText}</NavA></NavLi>;
   }
   else {
-    return <NavLi><NavA href={props.href}>{props.displayText}</NavA></NavLi>;
+    return <NavLi><NavA to={props.href}>{props.displayText}</NavA></NavLi>;
   }
 }
 
