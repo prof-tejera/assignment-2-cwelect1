@@ -27,6 +27,7 @@ const useInterval = (callback, delay) => {
 const AppProvider = ({ children }) => {
   const [queue, setQueue] = useState([]);
   const [time, setTime] = useState(0);
+  const [totalWorkoutTime, setTotalWorkoutTime] = useState(0);
   const [paused, setPaused] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -49,10 +50,12 @@ const AppProvider = ({ children }) => {
         activeIndex,
         setActiveIndex,
         time,
+        totalWorkoutTime,
+        setTotalWorkoutTime: (time) => setTotalWorkoutTime(time),
         paused,
         setPaused,
         reset: () => setActiveIndex(0),
-        addItem: item => setQueue(q => [...q, item]),
+        addItem: (item) => {setQueue(q => [...q, item]) },
         queue,
       }}
     >
