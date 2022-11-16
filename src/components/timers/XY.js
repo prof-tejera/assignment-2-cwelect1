@@ -13,6 +13,11 @@ const XY = (props) => {
   const [currentRound, setCurrentRound] = useState(0);
 
   useEffect(() => {
+    /* This sets a few things. How can I move it to a helper?
+      - clears the interval
+      - sets
+        - 
+    */
     let interval = null;
 
     if (isStarted && isPaused === false && time !== endTime) { // Timer is active
