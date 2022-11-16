@@ -1,41 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Menu from "../components/generic/Menu";
 import { useContext } from 'react';
 import { AppContext } from "../Context";
 import TimerView from "../views/TimerView";
-
-/*
-const xContainer = styled.div`
-  background: #f0f6fb;
-  height: 100vh;
-  overflow: auto;
-`;
-*/
+import calculateTotalWorkoutTime from "../utils/helpers";
 
 const Container = styled.section`
-  width: 1366px;
-  height: 768px;
+  width: 1fr;
+  height: 1fr;
 
   display: grid;
-  grid:
-    "sidebar body" 1fr
-    / 100px 1fr;
-  gap: 8px;
+  grid-template-columns: .33fr .34fr .33fr;
+  grid-template-areas:
+    "Sidebar Body Sidebar"
+    "Sidebar Body Sidebar"
 `;
 
 const SideBar = styled.div`
-  grid-area: sidebar;
 `;
 
 const Body = styled.div`
-  grid-area: body;
+  justify-items: center;
 `;
 
 const Timers = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`;
+
+const ColumnDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 7px;
 `;
 
 const menu_items = [
@@ -45,52 +43,77 @@ const menu_items = [
 ];
 
 const WorkoutView = () => {
-  const {activeIndex, setActiveIndex, addItem, queue, TIMER_TYPES} = useContext(AppContext);
+  const {activeIndex, addItem, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
+
+  useEffect(() => {
+    setTotalWorkoutTime(calculateTotalWorkoutTime(queue));
+  }, [queue, setTotalWorkoutTime]);
 
   const handleOnAdd = () => {
-    setActiveIndex(activeIndex + 1);
-    addItem(
-      {
+    addItem({
         type: 'Stopwatch',
-        maxTime: '5'
-      },
-    );
-    buildTimerTree();
+        maxTime: 60
+    });
+    addItem({
+        type: 'Countdown',
+        startTime: 5
+    });
+    addItem({
+        type: 'XY',
+        rounds: 2,
+        startTime: 5
+    });
+    addItem({
+        type: 'Tabata',
+        rounds: 2,
+        workTime: 5,
+        restTime: 5
+    });
   }
 
   const handleOnReset = () => {
 
   }
 
-  const buildTimerTree = () => {
-    {queue.map((t, i) => {
-
-      if (t.type === TIMER_TYPES.STOPWATCH) {
-        return <TimerView {...t} />;
-      } else if (t.type === TIMER_TYPES.COUNTDOWN) {
-        return <TimerView type={t.type} />;
-      } else if (t.type === TIMER_TYPES.XY) {
-        return <TimerView type={t.type} />;
-      } else if (t.type === TIMER_TYPES.TABATA) {
-        return <TimerView type={t.type} />;
-      }
-
-      return null;
-    })}
+  const displayTotalWorkoutTime = () => {
+    const hours = ("" + Math.floor((totalWorkoutTime / 3600) % 360)).slice(-2);
+    let hours_or_hours = (hours > 1) ? "hours" : "hour";
+    const minutes = (" " + Math.floor((totalWorkoutTime / 60) % 60)).slice(-2) + " min ";
+    const seconds = (" 0" + Math.floor((totalWorkoutTime / 1) % 60)).slice(-2) + " sec";
+    
+    return (hours + " " + hours_or_hours + " " + minutes + seconds);
   }
 
   return (
     <Container>
-      <Menu menu_items={menu_items}/>
-      <SideBar>Sidebar</SideBar>
-      <Body>Body
-        <div>ActiveIndex: {activeIndex}</div>
-        <button onClick={handleOnAdd}>Add Timer</button>
-        <button onClick={handleOnReset}>Reset</button>
-        <Timers>
-          {buildTimerTree}
-        </Timers>
+      <SideBar>
+          <Menu menu_items={menu_items}/>
+      </SideBar>
+      <Body>
+        <ColumnDiv>
+          <Timers>
+          <div>Total Workout Time: {displayTotalWorkoutTime()}</div>
+            {queue.map((t, i) => {
+              const timerProps = {
+                key: i,
+                ...t
+              };
+              if (t.type === TIMER_TYPES.STOPWATCH) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.XY) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.TABATA) {
+                return <TimerView {...timerProps} />;
+              }
+
+              return null;
+            })}
+          </Timers>
+        </ColumnDiv>
       </Body>
+      <SideBar/>
     </Container>
     )
 };
