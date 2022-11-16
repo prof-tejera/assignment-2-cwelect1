@@ -5,7 +5,6 @@ import Loading from "../components/generic/Loading";
 import Buttons from "../components/generic/Buttons";
 import DisplayTime from "../components/generic/DisplayTime";
 import DisplayRounds from "../components/generic/DisplayRounds";
-import Menu from "../components/generic/Menu";
 
 const Container = styled.div`
   display: grid;
@@ -21,19 +20,12 @@ const Title = styled.div`
   font-size: 2rem;
 `;
 
-const menu_items = [
-  { displayText: "Workout", href: "/", isActive: false },
-  { displayText: "Add Timer", href: "/add", isActive: true },
-  { displayText: "Docs", href: "/docs", isActive: false  },
-];
-
 /**
  * You can document your components by using the DocumentComponent component
  */
 const Documentation = () => {
   return (
     <Container>
-    <Menu menu_items={menu_items}/>
       <NotBlock>
         <Title>Documentation</Title>
         <DocumentComponent

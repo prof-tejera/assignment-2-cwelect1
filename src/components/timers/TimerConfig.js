@@ -173,6 +173,14 @@ const TimerConfig = (props) => {
     );
   }
 
+  const Default = () => {
+    return(
+      <ClearDiv className="timer">
+        Select a timer to configure.
+      </ClearDiv>
+    );
+  }
+
   if (props.type === 'Stopwatch') {
     return <Stopwatch/>
   } else if (props.type === 'Countdown') {
@@ -181,6 +189,8 @@ const TimerConfig = (props) => {
     return <XY/>
   } else if (props.type === 'Tabata') {
     return <Tabata/>
+  } else {
+    return <Default />
   }
 
 };

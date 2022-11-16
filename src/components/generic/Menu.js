@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const StyledUL = styled.ul`
   list-style-type: none;
   margin: 0;
+  width: 100%;
 `;
 
 const NavLi = styled.li`
@@ -13,7 +14,7 @@ const NavLi = styled.li`
     background-color: ${props => props.color || "lightblue"};
   }
 `;
-<Link to="/today"/>
+
 const NavA = styled(Link)`
   display: block;
   color: ${props => props.color || "green"};
