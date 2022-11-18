@@ -27,29 +27,33 @@ const TimerView = (props) => {
 
   if (props.type === 'Tabata') {
     title = props.type;
-    timer_type = <Tabata workTime={props.workTime * 1000} restTime={props.restTime * 1000} rounds={props.rounds}/>;
+    timer_type = <Tabata index={props.index} workTime={props.workTime * 1000} restTime={props.restTime * 1000} rounds={props.rounds}/>;
   }
   else if (props.type === 'XY') {
     title = props.type;
-    timer_type = <XY startTime={props.startTime * 1000} rounds={props.rounds}/>;
+    timer_type = <XY index={props.index} startTime={props.startTime * 1000} rounds={props.rounds}/>;
   }
   else if (props.type === 'Countdown') {
     title = props.type;
-    timer_type = <Countdown startTime={props.startTime * 1000}/>;
+    timer_type = <Countdown index={props.index} startTime={props.startTime * 1000}/>;
   }
   else if (props.type === 'Stopwatch') {
     title = props.type;
-    timer_type = <Stopwatch maxTime={props.maxTime * 1000}/>;
+    timer_type = <Stopwatch index={props.index} exludeButtons={props.exludeButtons} maxTime={props.maxTime * 1000}/>;
   }
 
-  return (
-    <div>
-      <Timer key={title}>
-        <Title>{title}</Title>
-        {timer_type}
-      </Timer>
-    </div>
+  if (props.displayTimer === false){
+    return null;
+  } else {
+    return (
+      <div>
+        <Timer id={'workout-timer-' + props.index} key={title}>
+          <Title>{title}</Title>
+          {timer_type}
+        </Timer>
+      </div>
     )
+  }
 };
 
 export default TimerView;

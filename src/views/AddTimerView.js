@@ -37,6 +37,7 @@ const AddTimerView = () => {
           dd_items={['Add Timer', 'Stopwatch', 'Countdown', 'XY', 'Tabata']}
         />
         <TimerConfig type={timerType}/>
+        
       </Section>
     </Container>
   )
