@@ -1,5 +1,5 @@
 // A timer that counts from a specified time (in milliseconds) to 0 (e.g. count down from 2 minutes and 30 seconds to 0)
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useContext } from 'react';
 import { AppContext } from "../../Context";
 import { useInterval } from '../../hooks';

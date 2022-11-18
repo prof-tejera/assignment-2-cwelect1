@@ -99,7 +99,6 @@ const TimerConfig = (props) => {
           <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
         <div>
-          {/*<TimerView type={props.type} startTime={startTime}/>*/}
           {queue.map((t, i) => {
                 const timerProps = {
                   key: i,

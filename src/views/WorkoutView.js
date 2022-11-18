@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useContext } from 'react';
 import { AppContext } from "../Context";
 import TimerView from "../views/TimerView";
 import calculateTotalWorkoutTime from "../utils/helpers";
-import { useInterval } from '../hooks';
 
 const Container = styled.section`
   width: 100%;
@@ -37,27 +36,11 @@ const ColumnDiv = styled.div`
 `;
 
 const WorkoutView = () => {
-  const {activeIndex, paused, setPaused, reset, setActiveIndex, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
-  const duration = 5, index = 0;
-
-  const [time, setTime] = useState(0);
-  const active = activeIndex === index;
+  const {paused, setPaused, reset, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
 
   useEffect(() => {
     setTotalWorkoutTime(calculateTotalWorkoutTime(queue));
   }, [queue, setTotalWorkoutTime]);
-
-  /*useInterval(() => {
-   // console.log("time: " + time + " durations: " + duration + " paused: " + paused)
-    if (paused || !active) return;
-
-    if (time === duration) {
-      //setActiveIndex(index + 1);
-    } else {
-      setTime(c => c + 1);
-      //console.log("time: " + time)
-    }
-  }, 1000);*/
 
   const displayTotalWorkoutTime = () => {
     const hours = ("" + Math.floor((totalWorkoutTime / 3600) % 360)).slice(-2);
@@ -83,12 +66,6 @@ const WorkoutView = () => {
             {paused ? 'Run' : 'Pause'}
           </button>
           <button onClick={reset}>Reset</button>
-          {/*<button onClick={setPaused(!paused)}>Start Workout</button>
-          <button
-            onClick={() => {
-              removeItem(0);
-            }}
-          > Start Workout</button>*/}
             {queue.map((t, i) => {
               const timerProps = {
                 key: i,
