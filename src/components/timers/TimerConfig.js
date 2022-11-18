@@ -27,7 +27,7 @@ const RowDiv = styled.div`
 `;
 
 const TimerConfig = (props) => {
-  const {addItem} = useContext(AppContext);
+  const {addItem, queue, TIMER_TYPES} = useContext(AppContext);
 
   const Stopwatch = () => {
     const [maxTime, setMaxTime] = useState(60)  
@@ -45,13 +45,33 @@ const TimerConfig = (props) => {
 
     return(
       <ClearDiv className="timer">
-        <RowDiv>
-          <label>Start Time (Seconds)</label>
-          <Select value={maxTime} onChange={handleOnChangeMaxTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+        <ColumnDiv>
+          <RowDiv>
+            <label>Start Time (Seconds)</label>
+            <Select value={maxTime} onChange={handleOnChangeMaxTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+          </RowDiv>
           <button onClick={handleAddTimer}>Add Timer</button>
-        </RowDiv>
+        </ColumnDiv>
         <div>
-          <TimerView type={props.type} maxTime={maxTime}/>
+        {queue.map((t, i) => {
+              const timerProps = {
+                key: i,
+                index: i,
+                exludeButtons: false,
+                maxTime: maxTime,
+                ...t
+              };
+              if (t.type === TIMER_TYPES.STOPWATCH) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.XY) {
+                return <TimerView {...timerProps} />;
+              } else if (t.type === TIMER_TYPES.TABATA) {
+                return <TimerView {...timerProps} />;
+              } 
+              return null;
+            })}
         </div>
       </ClearDiv>
     );
@@ -79,7 +99,26 @@ const TimerConfig = (props) => {
           <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
         <div>
-          <TimerView type={props.type} startTime={startTime}/>
+          {/*<TimerView type={props.type} startTime={startTime}/>*/}
+          {queue.map((t, i) => {
+                const timerProps = {
+                  key: i,
+                  index: i,
+                  exludeButtons: false,
+                  startTime: startTime,
+                  ...t
+                };
+                if (t.type === TIMER_TYPES.STOPWATCH) {
+                  return <TimerView {...timerProps} />;
+                } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+                  return <TimerView {...timerProps} />;
+                } else if (t.type === TIMER_TYPES.XY) {
+                  return <TimerView {...timerProps} />;
+                } else if (t.type === TIMER_TYPES.TABATA) {
+                  return <TimerView {...timerProps} />;
+                } 
+                return null;
+              })}
         </div>
       </ClearDiv>
     );
