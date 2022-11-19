@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useContext } from 'react';
 import { AppContext } from "../Context";
-import TimerView from "../views/TimerView";
+import Stopwatch from "../components/timers/Stopwatch";
+import Countdown from "../components/timers/Countdown";
+import XY from "../components/timers/XY";
+import Tabata from "../components/timers/Tabata";
 import calculateTotalWorkoutTime from "../utils/helpers";
 
 const Container = styled.section`
@@ -73,13 +76,13 @@ const WorkoutView = () => {
                 ...t
               };
               if (t.type === TIMER_TYPES.STOPWATCH) {
-                return <TimerView {...timerProps} />;
+                return <Stopwatch {...timerProps} />;
               } else if (t.type === TIMER_TYPES.COUNTDOWN) {
-                return <TimerView {...timerProps} />;
+                return <Countdown {...timerProps} />;
               } else if (t.type === TIMER_TYPES.XY) {
-                return <TimerView {...timerProps} />;
+                return <XY {...timerProps} />;
               } else if (t.type === TIMER_TYPES.TABATA) {
-                return <TimerView {...timerProps} />;
+                return <Tabata {...timerProps} />;
               } 
               return null;
             })}
