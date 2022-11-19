@@ -39,7 +39,7 @@ const ColumnDiv = styled.div`
 `;
 
 const WorkoutView = () => {
-  const {paused, setPaused, isReset, setIsReset, reset, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
+  const {paused, setPaused, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
 
   useEffect(() => {
     setTotalWorkoutTime(calculateTotalWorkoutTime(queue));
