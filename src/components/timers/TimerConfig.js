@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import Select from "../generic/Select";
-import TimerView from "../../views/TimerView";
+import Stopwatch from "./Stopwatch";
+import Countdown from "./Countdown";
+import XY from "./XY";
+import Tabata from "./Tabata";
 import { useState } from "react";
 import { useContext } from 'react';
 import { AppContext } from "../../Context";
@@ -16,12 +19,13 @@ const ClearDiv = styled.div`
 const ColumnDiv = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 7px;
+  margin: 10px;
 `;
 
 const RowDiv = styled.div`
   display: flex;
   flex-direction: row;
+  height: 1.25rem;
   margin: 3px;
   gap: 10px;
 `;
@@ -29,7 +33,7 @@ const RowDiv = styled.div`
 const TimerConfig = (props) => {
   const {addItem, queue, TIMER_TYPES} = useContext(AppContext);
 
-  const Stopwatch = () => {
+  const StopwatchConfig = () => {
     const [maxTime, setMaxTime] = useState(60)  
     
     const handleOnChangeMaxTime = (e) => {
@@ -39,7 +43,7 @@ const TimerConfig = (props) => {
     const handleAddTimer = () => {
       addItem({
         type: 'Stopwatch',
-        maxTime: maxTime
+        maxTime: maxTime * 1000
       });
     }
 
@@ -49,35 +53,33 @@ const TimerConfig = (props) => {
           <RowDiv>
             <label>Start Time (Seconds)</label>
             <Select value={maxTime} onChange={handleOnChangeMaxTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
+            <button onClick={handleAddTimer}>Add Timer</button>
           </RowDiv>
-          <button onClick={handleAddTimer}>Add Timer</button>
         </ColumnDiv>
-        <div>
-        {queue.map((t, i) => {
+        <ColumnDiv>
+            {queue.map((t, i) => {
               const timerProps = {
                 key: i,
                 index: i,
-                exludeButtons: false,
-                maxTime: maxTime,
                 ...t
               };
               if (t.type === TIMER_TYPES.STOPWATCH) {
-                return <TimerView {...timerProps} />;
+                return <Stopwatch {...timerProps} />;
               } else if (t.type === TIMER_TYPES.COUNTDOWN) {
-                return <TimerView {...timerProps} />;
+                return <Countdown {...timerProps} />;
               } else if (t.type === TIMER_TYPES.XY) {
-                return <TimerView {...timerProps} />;
+                return <XY {...timerProps} />;
               } else if (t.type === TIMER_TYPES.TABATA) {
-                return <TimerView {...timerProps} />;
+                return <Tabata {...timerProps} />;
               } 
               return null;
             })}
-        </div>
+        </ColumnDiv>
       </ClearDiv>
     );
   }
 
-  const Countdown = () => {
+  const CountdownConfig = () => {
     const [startTime, setStartTime] = useState(5)
 
     const handleOnChangeStartTime = (e) => {
@@ -87,7 +89,7 @@ const TimerConfig = (props) => {
     const handleAddTimer = () => {
       addItem({
         type: 'Countdown',
-        startTime: startTime
+        startTime: startTime * 1000
       });
     }
 
@@ -98,32 +100,31 @@ const TimerConfig = (props) => {
           <Select value={startTime} onChange={handleOnChangeStartTime} width="50%" name="rounds" dd_items={[5, 10, 15, 20, 25, 30, 60, 90]}></Select>
           <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
-        <div>
+        <ColumnDiv>
           {queue.map((t, i) => {
-                const timerProps = {
-                  key: i,
-                  index: i,
-                  exludeButtons: false,
-                  startTime: startTime,
-                  ...t
-                };
-                if (t.type === TIMER_TYPES.STOPWATCH) {
-                  return <TimerView {...timerProps} />;
-                } else if (t.type === TIMER_TYPES.COUNTDOWN) {
-                  return <TimerView {...timerProps} />;
-                } else if (t.type === TIMER_TYPES.XY) {
-                  return <TimerView {...timerProps} />;
-                } else if (t.type === TIMER_TYPES.TABATA) {
-                  return <TimerView {...timerProps} />;
-                } 
-                return null;
-              })}
-        </div>
+            const timerProps = {
+              key: i,
+              index: i,
+              startTime: startTime,
+              ...t
+            };
+            if (t.type === TIMER_TYPES.STOPWATCH) {
+              return <Stopwatch {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+              return <Countdown {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.XY) {
+              return <XY {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.TABATA) {
+              return <Tabata {...timerProps} />;
+            } 
+            return null;
+          })}
+        </ColumnDiv>
       </ClearDiv>
     );
   }
 
-  const XY = () => {
+  const XYConfig = () => {
     const [rounds, setRounds] = useState(1);
     const [startTime, setStartTime] = useState(5);
 
@@ -139,7 +140,7 @@ const TimerConfig = (props) => {
       addItem({
         type: 'XY',
         rounds: rounds,
-        startTime: startTime
+        startTime: startTime * 1000
       });
     }
 
@@ -154,14 +155,32 @@ const TimerConfig = (props) => {
             <button onClick={handleAddTimer}>Add Timer</button>
           </RowDiv>
         </ColumnDiv>
-        <div>
-          <TimerView type={props.type} rounds={rounds} startTime={startTime}/>
-        </div>
+        <ColumnDiv>
+          {queue.map((t, i) => {
+            const timerProps = {
+              key: i,
+              index: i,
+              startTime: startTime,
+              rounds: rounds,
+              ...t
+            };
+            if (t.type === TIMER_TYPES.STOPWATCH) {
+              return <Stopwatch {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+              return <Countdown {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.XY) {
+              return <XY {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.TABATA) {
+              return <Tabata {...timerProps} />;
+            } 
+            return null;
+          })}
+        </ColumnDiv>
       </ClearDiv>
     );
   }
 
-  const Tabata = () => {
+  const TabataConfig = () => {
     const [rounds, setRounds] = useState(1);
     const [workTime, setWorkTime] = useState(5);
     const [restTime, setRestTime] = useState(5);
@@ -182,8 +201,8 @@ const TimerConfig = (props) => {
       addItem({
         type: 'Tabata',
         rounds: rounds,
-        workTime: workTime,
-        restTime: restTime
+        workTime: workTime * 1000,
+        restTime: restTime * 1000
       });
     }
 
@@ -192,7 +211,8 @@ const TimerConfig = (props) => {
         <ColumnDiv>
         <RowDiv>
           <label>Rounds</label>
-          <Select margin-left='10px' value={rounds} onChange={handleOnChangeRounds} width="50%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}/>
+          <Select margin-left='10px' value={rounds} onChange={handleOnChangeRounds} width="65%" name="rounds" dd_items={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}/>
+          <button onClick={handleAddTimer}>Add Timer</button>
         </RowDiv>
         <RowDiv>
           <label>Work Time (Seconds)</label>
@@ -202,11 +222,29 @@ const TimerConfig = (props) => {
           <label>Rest Time (Seconds)</label>
             <Select value={restTime} onChange={handleOnChangeRestTime} width="50%" name="restTime" dd_items={[5, 10, 15, 30, 45, 60, 90]}></Select>
         </RowDiv>
-          <button onClick={handleAddTimer}>Add Timer</button>
         </ColumnDiv>
-        <div>
-          <TimerView type={props.type} workTime={workTime} restTime={restTime} rounds={rounds} />
-        </div>
+        <ColumnDiv>
+          {queue.map((t, i) => {
+            const timerProps = {
+              key: i,
+              index: i,
+              workTime: workTime,
+              restTime: restTime,
+              rounds: rounds,
+              ...t
+            };
+            if (t.type === TIMER_TYPES.STOPWATCH) {
+              return <Stopwatch {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.COUNTDOWN) {
+              return <Countdown {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.XY) {
+              return <XY {...timerProps} />;
+            } else if (t.type === TIMER_TYPES.TABATA) {
+              return <Tabata {...timerProps} />;
+            } 
+            return null;
+          })}
+        </ColumnDiv>
       </ClearDiv>
     );
   }
@@ -220,13 +258,13 @@ const TimerConfig = (props) => {
   }
 
   if (props.type === 'Stopwatch') {
-    return <Stopwatch/>
+    return <StopwatchConfig/>
   } else if (props.type === 'Countdown') {
-    return <Countdown/>
+    return <CountdownConfig/>
   } else if (props.type === 'XY') {
-    return <XY/>
+    return <XYConfig/>
   } else if (props.type === 'Tabata') {
-    return <Tabata/>
+    return <TabataConfig/>
   } else {
     return <Default />
   }

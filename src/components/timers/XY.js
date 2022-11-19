@@ -3,7 +3,29 @@ import { useState } from "react";
 import { useContext } from 'react';
 import { AppContext } from "../../Context";
 import { useInterval } from '../../hooks';
+import styled from "styled-components";
 import Panel from "../generic/Panel";
+
+const Timer = styled.div`
+background-color: rgba(50, 150, 150, .5);
+border: 2px solid ${props => props.border};
+border-radius: 1rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: .5rem;
+`;
+
+const Title = styled.div`
+margin: .25rem;
+font-size: 1.5rem;
+`;
+
+const Delete = styled.button`
+  background-color: transparent;
+  color: red;
+  align-self: end;
+`;
 
 const XY = (props) => {
   const startTime = props.startTime;
@@ -12,12 +34,14 @@ const XY = (props) => {
   const [time, setTime] = useState(startTime);
   const [currentRound, setCurrentRound] = useState(1);
 
-  const {paused, activeIndex, setActiveIndex} = useContext(AppContext);
+  const {removeItem, paused, activeIndex, setActiveIndex} = useContext(AppContext);
+  const [isRunning, setIsRunning] = useState(false);
   const active = activeIndex === props.index;
 
   useInterval(() => {
     if (paused || !active) return;
 
+    setIsRunning(true);
     if (time !== endTime) {
       setTime(c => c - 1000);
     } else if (time === endTime && (currentRound < totalRounds)) { // Rounds are still active
@@ -25,12 +49,23 @@ const XY = (props) => {
       setTime(startTime);
     } else {
       setActiveIndex(props.index + 1);
+      setIsRunning(false);
     }
-  }, 1000);
+  }, (time === props.startTime) ? 0 : 1000);
   
+  const handleDelete = () => {
+    removeItem(props.index);
+  }
+
   return (
-    <div className="xy">
-      <Panel time={time} displayType='xy' currentRound={currentRound}/>
+    <div>
+      <Timer border={isRunning ? 'red' : 'gray'} id={'workout-timer-' + props.index} key={props.type}>
+        <Delete onClick={handleDelete}>x</Delete>
+        <Title>{props.type}</Title>
+          <div className="xy">
+            <Panel time={time} displayType='xy' currentRound={currentRound}/>
+          </div>
+      </Timer>
     </div>
   );
 };
