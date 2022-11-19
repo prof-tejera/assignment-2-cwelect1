@@ -39,7 +39,7 @@ const ColumnDiv = styled.div`
 `;
 
 const WorkoutView = () => {
-  const {paused, setPaused, reset, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
+  const {paused, setPaused, isReset, setIsReset, reset, queue, totalWorkoutTime, setTotalWorkoutTime, TIMER_TYPES} = useContext(AppContext);
 
   useEffect(() => {
     setTotalWorkoutTime(calculateTotalWorkoutTime(queue));
@@ -68,7 +68,6 @@ const WorkoutView = () => {
           >
             {paused ? 'Run' : 'Pause'}
           </button>
-          <button onClick={reset}>Reset</button>
             {queue.map((t, i) => {
               const timerProps = {
                 key: i,
@@ -84,6 +83,7 @@ const WorkoutView = () => {
               } else if (t.type === TIMER_TYPES.TABATA) {
                 return <Tabata {...timerProps} />;
               } 
+              
               return null;
             })}
           </Timers>

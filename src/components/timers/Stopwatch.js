@@ -22,7 +22,6 @@ const Title = styled.div`
 `;
 
 const Delete = styled.button`
-  
   background-color: transparent;
   color: red;
   align-self: end;
@@ -32,7 +31,7 @@ const Stopwatch = (props) => {
   const [time, setTime] = useState(0);
   const endTime = props.maxTime;
 
-  const {removeItem, paused, activeIndex, setActiveIndex} = useContext(AppContext);
+  const { removeItem, paused, activeIndex, setActiveIndex } = useContext(AppContext);
   const [isRunning, setIsRunning] = useState(false);
   const active = activeIndex === props.index;
 
